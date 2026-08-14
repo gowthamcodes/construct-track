@@ -1,8 +1,20 @@
 {
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
-    "types": ["jest"]
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0"
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["**/node_modules", "**/Pods"]
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js",
+    "coverage",
+    "dist",
+    "build"
+  ]
 }

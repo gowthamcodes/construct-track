@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "856452451784",
+    "project_id": "construct-track-d2867",
+    "storage_bucket": "construct-track-d2867.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856452451784:android:d2e02e7e7b9982cf7204fd",
+        "android_client_info": {
+          "package_name": "com.constructtrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG7pDf778GIsFfgIZWI59ksxomEQ_iib4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

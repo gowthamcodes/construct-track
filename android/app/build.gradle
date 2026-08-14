@@ -78,6 +78,7 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.constructtrack"
+    
     defaultConfig {
         applicationId "com.constructtrack"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -85,6 +86,11 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+    
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -93,6 +99,7 @@ android {
             keyPassword 'android'
         }
     }
+    
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -117,3 +124,8 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+apply plugin: "com.google.gms.google-services"
+apply plugin: "com.google.firebase.crashlytics"
