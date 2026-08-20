@@ -63,27 +63,16 @@ class ExpenseRepository {
     await setDoc(reference, {
       ownerId: input.ownerId,
       siteId: input.siteId,
-
       title: input.title.trim(),
-
       amount: input.amount,
-
       category: input.category,
-
       tags: input.tags,
-
       vendor: input.vendor?.trim() || null,
-
       paymentMode: input.paymentMode,
-
       expenseDate: Timestamp.fromDate(input.expenseDate),
-
       notes: input.notes?.trim() || null,
-
       createdBy: input.ownerId,
-
       createdAt: now,
-
       updatedAt: now,
     });
 
