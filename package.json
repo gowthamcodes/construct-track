@@ -12,6 +12,7 @@
     "pods": "cd ios && pod install"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^9.1.0",
     "@react-native-firebase/app": "^23.0.0",
     "@react-native-firebase/auth": "^23.0.0",
     "@react-native-firebase/firestore": "^23.0.0",
@@ -20,13 +21,14 @@
     "@react-navigation/native-stack": "^7.3.26",
     "@reduxjs/toolkit": "^2.8.2",
     "@tanstack/react-query": "^5.87.1",
+    "lucide-react-native": "^1.31.0",
     "react": "19.2.0",
     "react-native": "0.86.0",
-    "react-native-awesome-alerts": "^2.0.0",
     "react-native-chart-kit": "^6.12.0",
     "react-native-config": "^1.6.0",
     "react-native-gesture-handler": "^2.28.0",
     "react-native-mmkv": "^4.0.0",
+    "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-nitro-modules": "^0.36.5",
     "react-native-safe-area-context": "^5.6.1",
     "react-native-screens": "^4.16.0",

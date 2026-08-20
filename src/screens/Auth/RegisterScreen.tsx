@@ -6,8 +6,8 @@ import {
   Text,
   TextInput,
   View,
+  Alert,
 } from 'react-native';
-import Alert from '../../components/common/Alert';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigation/navigationTypes';
 import { AuthService } from '../../services/auth/AuthService';
@@ -25,17 +25,17 @@ export default function RegisterScreen({ navigation }: Props) {
 
   async function handleRegister() {
     if (!name.trim() || !email.trim() || !password) {
-      Alert.show({ message: 'Please complete all fields.' });
+      Alert.alert('Alert', 'Please complete all fields.');
       return;
     }
 
     if (password.length < 6) {
-      Alert.show({ message: 'Password must contain at least 6 characters.' });
+      Alert.alert('Alert', 'Password must contain at least 6 characters.');
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.show({ message: 'Passwords do not match.' });
+      Alert.alert('Alert', 'Passwords do not match.');
       return;
     }
 
@@ -43,7 +43,7 @@ export default function RegisterScreen({ navigation }: Props) {
       setLoading(true);
       await AuthService.register({ name, email, password });
     } catch (error) {
-      Alert.show({ message: getAuthErrorMessage(error) });
+      Alert.alert('Alert', getAuthErrorMessage(error));
     } finally {
       setLoading(false);
     }

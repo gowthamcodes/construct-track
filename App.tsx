@@ -9,7 +9,6 @@ import { queryClient } from './src/services/queryClient';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { StatusBar } from 'react-native';
 import { Colors } from './src/constants';
-import Alert from './src/components/common/Alert';
 
 export default function App() {
   return (
@@ -25,7 +24,6 @@ export default function App() {
               <AppNavigator />
             </NavigationContainer>
           </QueryClientProvider>
-          <Alert ref={ref => Alert.setRef(ref)} />
         </Provider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

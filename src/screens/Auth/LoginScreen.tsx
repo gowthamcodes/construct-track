@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Pressable,
@@ -6,8 +6,8 @@ import {
   Text,
   TextInput,
   View,
+  Alert,
 } from 'react-native';
-import Alert from '../../components/common/Alert';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigation/navigationTypes';
 import { AuthService } from '../../services/auth/AuthService';
@@ -25,12 +25,12 @@ export default function LoginScreen({ navigation }: Props) {
 
   const handleLogin = async () => {
     if (!email.trim()) {
-      Alert.show({ message: 'Please enter your email.' });
+      Alert.alert('Alert', 'Please enter your email.');
       return;
     }
 
     if (!password) {
-      Alert.show({ message: 'Please enter your password.' });
+      Alert.alert('Alert', 'Please enter your password.');
       return;
     }
 
@@ -38,7 +38,7 @@ export default function LoginScreen({ navigation }: Props) {
       setLoading(true);
       await AuthService.login(email, password);
     } catch (error) {
-      Alert.show({ message: getAuthErrorMessage(error) });
+      Alert.alert('Login Failed', getAuthErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -53,6 +53,13 @@ export default function LoginScreen({ navigation }: Props) {
       setMagicTapCount(0);
     }
   };
+
+  useEffect(() => {
+    if (__DEV__) {
+      setEmail('gowthamcodes@gmail.com');
+      setPassword('Admin*123');
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
