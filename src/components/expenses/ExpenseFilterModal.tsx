@@ -21,7 +21,9 @@ import {
   ExpenseSort,
   PaymentMode,
 } from '../../types/expense.types';
-import { Colors } from '../../constants';
+import { Colors, Fonts } from '../../constants';
+import { formatPaymentMode } from '../../utils/helper';
+import { RotateCcw } from 'lucide-react-native';
 
 export default function ExpenseFilterModal({
   visible,
@@ -34,18 +36,28 @@ export default function ExpenseFilterModal({
   const filters = useAppSelector(state => state.expenseFilter);
 
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal
+      visible={visible}
+      onRequestClose={() => onClose()}
+      animationType="slide"
+      transparent
+    >
       <View style={styles.overlay}>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.title}>Filters</Text>
-            <Pressable onPress={() => dispatch(resetFilters())}>
-              <Text>Reset</Text>
+            <Pressable
+              style={styles.resetButton}
+              hitSlop={20}
+              onPress={() => dispatch(resetFilters())}
+            >
+              <RotateCcw color={Colors.SLATE} size={16} />
+              <Text style={styles.resetButtonText}>Reset</Text>
             </Pressable>
           </View>
 
-          <ScrollView>
-            <Text style={styles.section}>Category</Text>
+          <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+            <Text style={[styles.section, { marginTop: 12 }]}>Category</Text>
             <View style={styles.chips}>
               <Chip
                 label="All"
@@ -74,7 +86,7 @@ export default function ExpenseFilterModal({
               {PAYMENT_MODES.map(mode => (
                 <Chip
                   key={mode}
-                  label={mode}
+                  label={formatPaymentMode(mode)}
                   selected={filters.paymentMode === mode}
                   onPress={() => dispatch(setPaymentMode(mode as PaymentMode))}
                 />
@@ -119,7 +131,9 @@ function Chip({
       style={[styles.chip, selected && styles.selected]}
       onPress={onPress}
     >
-      <Text style={selected ? styles.selectedText : undefined}>{label}</Text>
+      <Text style={[styles.chipText, selected && styles.selectedText]}>
+        {label}
+      </Text>
     </Pressable>
   );
 }
@@ -143,7 +157,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: { fontSize: 22, fontWeight: '700' },
-  section: { fontSize: 15, fontWeight: '700', marginTop: 16, marginBottom: 10 },
+  section: {
+    fontSize: 16,
+    lineHeight: 16 * 1.4,
+    fontFamily: Fonts.NOTO_SEMI_BOLD,
+    marginTop: 16,
+    marginBottom: 10,
+  },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   chip: {
     paddingHorizontal: 14,
@@ -153,7 +173,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   selected: { backgroundColor: Colors.PRIMARY, borderColor: Colors.PRIMARY },
-  selectedText: { color: Colors.WHITE },
+  chipText: {
+    fontFamily: Fonts.NOTO_REGULAR,
+    fontSize: 14,
+    lineHeight: 14 * 1.4,
+    color: Colors.PRIMARY,
+  },
+  selectedText: {
+    color: Colors.WHITE,
+    fontFamily: Fonts.NOTO_MEDIUM,
+  },
   apply: {
     height: 52,
     marginTop: 20,
@@ -162,5 +191,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.PRIMARY,
   },
-  applyText: { color: Colors.WHITE, fontWeight: '600' },
+  applyText: {
+    color: Colors.WHITE,
+    fontSize: 16,
+    lineHeight: 16 * 1.4,
+    fontFamily: Fonts.NOTO_SEMI_BOLD,
+  },
+  resetButton: {
+    paddingHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 6,
+  },
+  resetButtonText: {
+    fontSize: 14,
+    lineHeight: 14 * 1.4,
+    fontFamily: Fonts.NOTO_MEDIUM,
+    color: Colors.SLATE,
+  },
 });

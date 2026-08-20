@@ -27,8 +27,14 @@ export default function CategoryBreakdownList({
   return (
     <View style={styles.card}>
       <Text style={styles.title}>Expense by Category</Text>
-      {categories.map(item => (
-        <View key={item.category} style={styles.row}>
+      {categories.map((item, index) => (
+        <View
+          key={item.category}
+          style={[
+            styles.row,
+            categories?.length !== index + 1 && styles.border,
+          ]}
+        >
           <View style={styles.left}>
             <Text style={styles.category}>{item.category}</Text>
             <Text style={styles.percent}>{item.percentage.toFixed(1)}%</Text>
@@ -57,6 +63,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  border: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Colors.BLUE_LIGHT,
   },

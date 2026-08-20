@@ -1,16 +1,12 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useAppSelector } from '../../redux/hooks';
 import { useExpenseReport } from '../../hooks/reports/useExpenseReport';
 import { formatCurrency } from '../../utils/currency';
 import { env } from '../../config/env';
 import { Colors } from '../../constants';
+import Loader from '../../components/common/Loader';
+import { formatPaymentMode } from '../../utils/helper';
 
 export default function ReportsScreen() {
   const user = useAppSelector(state => state.auth.user);
@@ -18,12 +14,7 @@ export default function ReportsScreen() {
     useAppSelector(state => state.site.selectedSiteId) ?? env.defaultSiteId;
   const { report, isLoading } = useExpenseReport(user?.uid, siteId);
 
-  if (isLoading)
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
+  if (isLoading) return <Loader />;
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -52,45 +43,49 @@ export default function ReportsScreen() {
       </View>
 
       <Section title="Category Summary">
-        {report.categories.map(item => (
+        {report.categories.map((item, index) => (
           <Row
             key={item.category}
             label={item.category}
             value={formatCurrency(item.amount)}
             secondary={`${item.percentage.toFixed(1)}% • ${item.count} transactions`}
+            showBorder={report.categories.length !== index + 1}
           />
         ))}
       </Section>
 
       <Section title="Payment Mode">
-        {report.payments.map(item => (
+        {report.payments.map((item, index) => (
           <Row
             key={item.paymentMode}
-            label={item.paymentMode}
+            label={formatPaymentMode(item.paymentMode)}
             value={formatCurrency(item.amount)}
             secondary={`${item.percentage.toFixed(1)}% • ${item.count} transactions`}
+            showBorder={report.payments.length !== index + 1}
           />
         ))}
       </Section>
 
       <Section title="Top Vendors">
-        {report.vendors.slice(0, 10).map(item => (
+        {report.vendors.slice(0, 10).map((item, index) => (
           <Row
             key={item.vendor}
             label={item.vendor}
             value={formatCurrency(item.amount)}
             secondary={`${item.count} transactions`}
+            showBorder={report.vendors.slice(0, 10).length !== index + 1}
           />
         ))}
       </Section>
 
       <Section title="Monthly Summary">
-        {report.monthly.map(item => (
+        {report.monthly.map((item, index) => (
           <Row
             key={item.month}
             label={formatMonth(item.month)}
             value={formatCurrency(item.amount)}
             secondary={`${item.count} transactions`}
+            showBorder={report.monthly.length !== index + 1}
           />
         ))}
       </Section>
@@ -134,13 +129,15 @@ function Row({
   label,
   value,
   secondary,
+  showBorder,
 }: {
   label: string;
   value: string;
   secondary: string;
+  showBorder: boolean;
 }) {
   return (
-    <View style={styles.row}>
+    <View style={[styles.row, showBorder && styles.border]}>
       <View style={styles.rowLeft}>
         <Text style={styles.rowLabel}>{label}</Text>
         <Text style={styles.secondary}>{secondary}</Text>
@@ -181,6 +178,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 14,
+  },
+  border: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Colors.BLUE_LIGHT,
   },

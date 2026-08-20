@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-  ActivityIndicator,
+  Image,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { useAppSelector } from '../../redux/hooks';
@@ -15,11 +16,23 @@ import MonthlyExpenseChart from '../../components/dashboard/MonthlyExpenseChart'
 import CategoryExpenseChart from '../../components/dashboard/CategoryExpenseChart';
 import CategoryBreakdownList from '../../components/dashboard/CategoryBreakdownList';
 import { formatCompactCurrency, formatCurrency } from '../../utils/currency';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  AppStackParamList,
+  MainTabParamList,
+} from '../../navigation/navigationTypes';
 import { env } from '../../config/env';
-import { Colors } from '../../constants';
+import { Colors, Images } from '../../constants';
 import Loader from '../../components/common/Loader';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
-export default function DashboardScreen() {
+type Props = CompositeScreenProps<
+  BottomTabScreenProps<MainTabParamList, 'Dashboard'>,
+  NativeStackScreenProps<AppStackParamList>
+>;
+
+export default function DashboardScreen({ navigation }: Props) {
   const user = useAppSelector(state => state.auth.user);
   const selectedSiteId = useAppSelector(state => state.site.selectedSiteId);
   const siteId = selectedSiteId ?? env.defaultSiteId;
@@ -63,8 +76,24 @@ export default function DashboardScreen() {
         />
       }
     >
-      <Text style={styles.greeting}>Welcome back</Text>
-      <Text style={styles.title}>Construction Overview</Text>
+      <View style={styles.wrapper}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.greeting}>Welcome back</Text>
+          <Text style={styles.title}>Construction Overview</Text>
+        </View>
+
+        <TouchableOpacity
+          activeOpacity={0.6}
+          hitSlop={20}
+          onPress={() => navigation.navigate('Profile')}
+        >
+          <Image
+            source={Images.User}
+            resizeMode="contain"
+            style={styles.user}
+          />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.totalCard}>
         <Text style={styles.totalLabel}>Total Construction Expense</Text>
@@ -127,4 +156,6 @@ const styles = StyleSheet.create({
   grid: { flexDirection: 'row', gap: 12, marginTop: 16 },
   emptyTitle: { fontSize: 20, fontWeight: '700' },
   empty: { marginTop: 8, textAlign: 'center', color: Colors.SECONDARY },
+  wrapper: { flexDirection: 'row', alignItems: 'center' },
+  user: { width: 40, height: 40 },
 });

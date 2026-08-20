@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -13,6 +13,7 @@ import DashboardScreen from '../screens/Dashboard/DashboardScreen';
 import ExpensesScreen from '../screens/Expenses/ExpensesScreen';
 import ReportsScreen from '../screens/Reports/ReportsScreen';
 import AddExpenseScreen from '../screens/AddExpense/AddExpenseScreen';
+import ProfileScreen from '../screens/Profile/ProfileScreen';
 
 import {
   AuthStackParamList,
@@ -20,6 +21,8 @@ import {
   MainTabParamList,
 } from './navigationTypes';
 import Splash from '../components/common/Splash';
+import { Blocks, BookOpenText, Gauge } from 'lucide-react-native';
+import { Colors } from '../constants';
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const AppStack = createNativeStackNavigator<AppStackParamList>();
@@ -30,11 +33,52 @@ function MainTabs() {
     <Tabs.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarActiveTintColor: Colors.PRIMARY,
+        tabBarInactiveTintColor: '#9CA3AF',
+        tabBarStyle: {
+          height: 62,
+          paddingBottom: 8,
+          paddingTop: 6,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
+        tabBarButton: props => (
+          // @ts-ignore
+          <TouchableOpacity {...props} activeOpacity={0.6} />
+        ),
       }}
     >
-      <Tabs.Screen name="Dashboard" component={DashboardScreen} />
-      <Tabs.Screen name="Expenses" component={ExpensesScreen} />
-      <Tabs.Screen name="Reports" component={ReportsScreen} />
+      <Tabs.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Gauge size={size} height={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Expenses"
+        component={ExpensesScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Blocks size={size} height={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Reports"
+        component={ReportsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <BookOpenText size={size} height={size} color={color} />
+          ),
+        }}
+      />
     </Tabs.Navigator>
   );
 }
@@ -55,17 +99,15 @@ function AuthNavigator() {
 
 function AppStackNavigator() {
   return (
-    <AppStack.Navigator>
-      <AppStack.Screen
-        name="MainTabs"
-        component={MainTabs}
-        options={{ headerShown: false }}
-      />
-      <AppStack.Screen
-        name="AddExpense"
-        component={AddExpenseScreen}
-        options={{ title: 'Expense' }}
-      />
+    <AppStack.Navigator
+      screenOptions={{
+        animation: 'none',
+        headerShown: false,
+      }}
+    >
+      <AppStack.Screen name="MainTabs" component={MainTabs} />
+      <AppStack.Screen name="AddExpense" component={AddExpenseScreen} />
+      <AppStack.Screen name="Profile" component={ProfileScreen} />
     </AppStack.Navigator>
   );
 }

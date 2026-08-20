@@ -52,16 +52,32 @@ export default function CategoryExpenseChart({
       <Text style={styles.title}>Category Breakdown</Text>
 
       {expenses?.length > 0 ? (
-        <PieChart
-          data={expenses}
-          width={WIDTH - 72}
-          height={220}
-          chartConfig={chartConfig}
-          accessor="amount"
-          backgroundColor="transparent"
-          paddingLeft="8"
-          absolute
-        />
+        <>
+          <View style={styles.chartContainer}>
+            <PieChart
+              data={expenses}
+              width={WIDTH}
+              height={220}
+              chartConfig={chartConfig}
+              accessor="amount"
+              backgroundColor="transparent"
+              paddingLeft="100"
+              hasLegend={false}
+              absolute
+            />
+          </View>
+
+          <View style={styles.legend}>
+            {expenses.map(item => (
+              <View key={item.name} style={styles.legendItem}>
+                <View
+                  style={[styles.legendDot, { backgroundColor: item.color }]}
+                />
+                <Text style={styles.legendText}>{item.name}</Text>
+              </View>
+            ))}
+          </View>
+        </>
       ) : (
         <Text style={styles.empty}>No category data.</Text>
       )}
@@ -78,13 +94,39 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.BLUE_LIGHT,
   },
-
   title: {
     fontSize: 18,
     fontWeight: '700',
     marginBottom: 12,
   },
-
+  chartContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  legend: {
+    marginTop: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 4,
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  legendDot: {
+    width: 9,
+    height: 9,
+    borderRadius: 5,
+    marginRight: 5,
+  },
+  legendText: {
+    fontSize: 12,
+    color: Colors.SLATE,
+  },
   empty: {
     paddingVertical: 40,
     textAlign: 'center',
